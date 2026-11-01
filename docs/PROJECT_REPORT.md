@@ -39,15 +39,17 @@ In traditional computer science pedagogy, cryptography is taught using abstract 
 
 ---
 
-## 4. Proposed Solution: HashForge
+## 4. Proposed Solution: HashForge Full-Stack Platform
 
-**HashForge** was designed to provide a unified, production-grade educational platform. Rather than a rudimentary demo, HashForge provides:
-1. **FIPS-Compliant Core:** Pure Python standard library `hashlib` bindings to SHA-256 and SHA3-256.
-2. **Big-Endian Bit Indexing Standard:** Clear mathematical mapping between user-selected bit indices and physical byte modifications.
-3. **Structured 256-Bit Visualizer:** A responsive 8-row, 32-bit grid that visually highlights changed bits with glowing accents.
-4. **Statistical Laboratory:** Monte Carlo engine evaluating 10 to 500 independent trials, graphing empirical frequency distributions against theoretical binomial curves.
-5. **Memory-Safe File Integrity Engine:** 64KB streaming buffers that inspect file tampering without exhausting system memory.
-6. **Built-In Learning Center & Evaluation Quiz:** Structured curriculum covering 12 foundational topics and a 10-question evaluation quiz with instant grading and explanations.
+**HashForge** was designed to provide a unified, production-grade educational platform. Rather than a rudimentary demo, HashForge provides a decoupled full-stack architecture:
+1. **FIPS-Compliant Core:** Pure Python standard library `hashlib` bindings to SHA-256 and SHA3-256 (`core/`).
+2. **FastAPI High-Throughput REST API:** Exposes deterministic endpoints for hashing, bit manipulation, Monte Carlo simulations, and streaming file uploads with Pydantic v2 schemas (`backend/`).
+3. **Modern React 19 Frontend:** Built with Vite, TypeScript, Tailwind CSS, Lucide React, and Recharts, adhering strictly to enterprise developer tool aesthetics with zero emojis in UI.
+4. **Big-Endian Bit Indexing Standard:** Clear mathematical mapping between user-selected bit indices and physical byte modifications.
+5. **Structured 256-Bit Visualizer:** A responsive 8-row, 32-bit grid that visually highlights changed bits with glowing amber accents.
+6. **Statistical Laboratory:** Monte Carlo engine evaluating 10 to 500 independent trials, graphing empirical frequency distributions against theoretical binomial curves using Recharts.
+7. **Memory-Safe File Integrity Engine:** 64KB streaming buffers that inspect file tampering without exhausting system memory.
+8. **Built-In Learning Center & Evaluation Quiz:** Structured curriculum covering 12 foundational topics and a 10-question evaluation quiz with instant grading and explanations.
 
 ---
 
@@ -66,20 +68,33 @@ In traditional computer science pedagogy, cryptography is taught using abstract 
 ### 6.1 Hardware Requirements
 - **Processor:** 1.5 GHz Dual-Core 64-bit x86/ARM processor (Intel Core i3, AMD Ryzen, Apple Silicon, etc.)
 - **Memory (RAM):** 2 GB minimum (4 GB recommended)
-- **Disk Space:** 250 MB free disk space
+- **Disk Space:** 350 MB free disk space (including Node.js dependencies and Python packages)
 - **Display Resolution:** Minimum $1280 \times 720$ (optimized for responsive desktop viewing)
 
 ### 6.2 Software Requirements
 - **Operating System:** Windows 10/11, macOS 12+, or modern Linux (Ubuntu 22.04+)
 - **Python Runtime:** Python 3.11 or newer (tested on Python 3.13)
-- **Web Browser:** Google Chrome, Mozilla Firefox, Microsoft Edge, or Safari with WebGL enabled
+- **Node.js Runtime:** Node.js 18.0 or newer (tested on Node.js 20+) with npm
+- **Web Browser:** Modern evergreen web browser (Google Chrome, Mozilla Firefox, Microsoft Edge, Safari) with modern CSS grid and WebGL support
 
-### 6.3 Dependencies
-- `streamlit >= 1.35.0` (Reactive web framework)
-- `numpy >= 1.26.0` (Numerical calculations)
-- `pandas >= 2.2.0` (Tabular trial data handling)
-- `plotly >= 5.20.0` (Interactive visualization engine)
-- `pytest >= 8.0.0` (Automated testing framework)
+### 6.3 Backend Dependencies (`backend/requirements.txt` & `requirements.txt`)
+- `fastapi >= 0.111.0` (High-performance asynchronous REST API framework)
+- `uvicorn >= 0.30.0` (Lightning-fast ASGI web server)
+- `pydantic >= 2.7.0` (Strict runtime data validation and schema generation)
+- `python-multipart >= 0.0.9` (Streaming chunked file upload support)
+- `numpy >= 1.26.0` (Numerical array operations and statistical calculations)
+- `pandas >= 2.2.0` (Tabular trial data structures and analytics)
+- `pytest >= 8.0.0` & `httpx >= 0.27.0` (Automated backend and cryptographic testing)
+
+### 6.4 Frontend Dependencies (`frontend/package.json`)
+- `react >= 19.0.0` & `react-dom >= 19.0.0` (Declarative UI component architecture)
+- `vite >= 6.0.0` (Next-generation frontend build tooling and HMR dev server)
+- `typescript >= 5.7.0` (Compile-time type safety)
+- `tailwindcss >= 3.4.0` (Utility-first styling with custom cybersecurity design tokens)
+- `lucide-react >= 1.16.0` (Strict SVG iconography — zero emojis in UI)
+- `recharts >= 2.15.0` (Responsive SVG charting library for histograms and timelines)
+- `framer-motion >= 12.0.0` (Accessible micro-interactions and transitions)
+- `vitest >= 2.1.0` & `@testing-library/react >= 16.0.0` (Component unit and integration testing)
 
 ---
 
@@ -157,17 +172,31 @@ Thus, approximately 95.4% of all empirical single-bit trials will fall within $\
 
 ## 9. Test Cases & QA Validation
 
-The automated test suite (`tests/`) contains 53 unit and integration tests executed using Pytest:
+HashForge employs an exhaustive dual-tier automated testing strategy consisting of **70 backend Pytest tests** and **10 frontend Vitest tests** (total **80 automated tests** with a 100% pass rate).
+
+### 9.1 Backend & Cryptographic Engine Test Matrix (Pytest)
 
 | Test File | Focus Area | Cases | Status |
 |---|---|:---:|:---:|
-| `test_hash_engine.py` | NIST test vectors (empty, "abc", fox), Unicode, timing | 12 | ✅ Passed |
-| `test_bit_operations.py` | MSB, LSB, middle bits, XOR inversion, out-of-bounds | 13 | ✅ Passed |
-| `test_avalanche.py` | Hamming distance, zero distance, SAC bounds, diff mask | 8 | ✅ Passed |
-| `test_experiments.py` | Seed reproducibility, baseline reset, statistical tendency | 4 | ✅ Passed |
-| `test_file_integrity.py` | 64KB chunking, empty files, parity checks, reference match | 6 | ✅ Passed |
-| `test_validators.py` | Input sanitization, bit range guardrails, type checking | 10 | ✅ Passed |
-| **Total** | **All System Components** | **53** | **100% Passed** |
+| `test_hash_engine.py` | NIST test vectors (empty, "abc", fox), Unicode, timing, SHA-256 / SHA3-256 | 12 | Passed |
+| `test_bit_operations.py` | MSB (bit 0), LSB (bit 7), middle bits, XOR inversion, out-of-bounds guards | 13 | Passed |
+| `test_avalanche.py` | Hamming distance, zero distance, SAC bounds, bit difference masks | 8 | Passed |
+| `test_experiments.py` | Seed reproducibility, baseline reset, statistical tendency near 50% | 4 | Passed |
+| `test_file_integrity.py` | 64KB chunking, empty files, parity checks, vendor reference matching | 6 | Passed |
+| `test_validators.py` | Input sanitization, bit range guardrails, algorithm validation | 10 | Passed |
+| `test_backend_api.py` | FastAPI REST endpoints, Pydantic schemas, health check, multipart file uploads | 17 | Passed |
+| **Pytest Total** | **Core Cryptographic Engine & REST API** | **70** | **100% Passed (1.95s)** |
+
+### 9.2 Frontend Component & Navigation Test Matrix (Vitest)
+
+| Test File | Focus Area | Cases | Status |
+|---|---|:---:|:---:|
+| `BitGrid256.test.tsx` | 256-bit responsive grid rendering, flipped bit glow styling, tooltip labels | 3 | Passed |
+| `HashBox.test.tsx` | Hexadecimal & binary digest display, clipboard copy interactions, chunking | 4 | Passed |
+| `Navigation.test.tsx` | Sidebar routing, active link states, strict zero-emoji UI verification | 3 | Passed |
+| **Vitest Total** | **React 19 Components & Design System** | **10** | **100% Passed (13.88s)** |
+
+**Grand Total:** **80 automated tests** passing with 100% verification rate.
 
 ---
 

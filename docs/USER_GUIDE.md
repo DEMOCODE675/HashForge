@@ -1,103 +1,150 @@
 # HashForge: User Guide & Laboratory Manual
 
-Welcome to **HashForge**. This user guide walks you through every module in the laboratory to help you explore cryptographic hashing and the avalanche effect.
+Welcome to **HashForge**, an interactive educational laboratory for cryptographic hashing and avalanche effect analysis. This guide covers setup, navigation, and practical exercises across the full-stack React and FastAPI platform.
 
 ---
 
-## 🚀 Quick Setup & Launch
+## 1. Quick Setup & Launch
 
-1. Open PowerShell, Terminal, or Command Prompt inside the project directory:
-   ```bash
-   cd c:\Users\priyanshu\PROJECTS\HASHFORGE
-   ```
-2. Install requirements:
-   ```bash
-   python -m pip install -r requirements.txt
-   ```
-3. Run HashForge:
-   ```bash
-   python -m streamlit run app.py
-   ```
-4. HashForge will open in your default browser at `http://localhost:8501`.
+### 1.1 Prerequisites
+- **Python 3.11+** (tested with Python 3.13)
+- **Node.js 18+** with `npm` (tested with Node.js 20+)
+- Modern web browser (Chrome, Firefox, Edge, Safari)
+
+### 1.2 Running the Application
+
+The application consists of a FastAPI backend and a React 19 Single Page Application.
+
+#### Step 1: Start the FastAPI Backend
+Open a terminal in the project root:
+```powershell
+cd c:\Users\priyanshu\PROJECTS\HASHFORGE
+python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
+```
+The backend API server will start at `http://127.0.0.1:8000`. You can inspect interactive OpenAPI documentation at `http://127.0.0.1:8000/docs`.
+
+#### Step 2: Start the React Frontend
+Open a second terminal window:
+```powershell
+cd c:\Users\priyanshu\PROJECTS\HASHFORGE\frontend
+npm run dev
+```
+The Vite development server will start at `http://localhost:5173`. Open this URL in your web browser.
 
 ---
 
-## 📖 Laboratory Modules Walkthrough
+## 2. Laboratory Modules Walkthrough
 
 ### Module 1: Hash Generator
-- **Goal:** Compute hashes of text, examine hexadecimal vs binary digests, and export reports.
-- **Steps:**
-  1. Navigate to **1_Hash_Generator** in the sidebar.
-  2. Type any text into the text area or click **Sample NIST Vector**.
-  3. Observe the live byte and bit counter.
+- **Objective:** Compute hashes of text, examine hexadecimal vs binary digests, and export reports.
+- **How to Use:**
+  1. Navigate to **Hash Generator** in the sidebar.
+  2. Enter plain text into the input field or click **Sample NIST Vector** to load a standardized test string.
+  3. Observe the live byte and bit counter update in real time.
   4. Switch between the **SHA-256** and **SHA3-256** tabs.
-  5. Expand **View Formatted Hex & Raw Binary Digest** to view chunked outputs.
-  6. Click **Download Cryptographic Digests** to save the results to a `.txt` file.
+  5. Expand the **Formatted Hex & Raw Binary Digest** accordion to view chunked outputs with 8-character groupings.
+  6. Click **Copy** to copy the hex or binary string to your clipboard.
+  7. Click **Export Report** to download the cryptographic digest summary as a text file.
 
 ---
 
 ### Module 2: Algorithm Lab (SHA-256 vs SHA3-256)
-- **Goal:** Compare Merkle-Damgård vs Sponge architectures and benchmark execution times.
-- **Steps:**
-  1. Open **2_Algorithm_Lab**.
-  2. Enter a plaintext string.
-  3. Compare the side-by-side SHA-256 and SHA3-256 cards.
-  4. Notice the **Cross-Algorithm Divergence**: even for identical inputs, the two functions share ~50% bit divergence.
-  5. Select benchmark iterations (e.g., 1,000) and click **Run Local Latency Benchmark** to measure microsecond-level CPU throughput.
+- **Objective:** Compare the Merkle-Damgård iterative compression of SHA-256 against the Keccak Sponge permutation of SHA3-256.
+- **How to Use:**
+  1. Open **Algorithm Lab**.
+  2. Enter input text to generate side-by-side SHA-256 and SHA3-256 digests.
+  3. Examine the **Cross-Algorithm Divergence Metric**: even for identical inputs, the two algorithms exhibit independent hash output with ~50% bit divergence.
+  4. Select a benchmark iteration count (100, 500, 1,000, or 5,000 iterations).
+  5. Click **Run Latency Benchmark** to measure microsecond-level CPU throughput and compare execution speeds.
+  6. Review the comparative architecture table detailing block sizes, internal states, and collision resistance bounds.
 
 ---
 
 ### Module 3: Single-Bit Flip Experiment
-- **Goal:** Invert exactly one input bit and visualize how ~50% of output bits flip.
-- **Steps:**
-  1. Open **3_Single_Bit_Experiment**.
-  2. Enter baseline text (e.g., `HashForge`).
-  3. Choose the algorithm (`SHA-256` or `SHA3-256`).
-  4. Move the bit slider to pick an index (e.g. `0` for the MSB of Byte 0).
-  5. Inspect the **Input Byte & Bit Inspection** panels to see the inverted bit.
-  6. Review the **Hamming Distance** and **Avalanche Percentage**.
-  7. In the **256-Bit Output Diffusion Visualizer**, hover over the **glowing amber bits** to inspect which bits changed.
+- **Objective:** Invert exactly one input bit and observe the cascading avalanche effect across the 256 output bits.
+- **How to Use:**
+  1. Open **Single-Bit Experiment**.
+  2. Enter baseline text (e.g., `HashForge Cryptography Lab`).
+  3. Select the target hash algorithm (`SHA-256` or `SHA3-256`).
+  4. Adjust the **Bit Index Slider** to target any bit $k \in [0, 8N - 1]$. Note that bit 0 represents the Most Significant Bit (MSB) of Byte 0.
+  5. Inspect the **Input Byte & Bit Inspection** panel to view the exact byte index, bit offset, and modified ASCII character.
+  6. Review the resulting **Hamming Distance** and **Avalanche Percentage**.
+  7. In the **256-Bit Output Diffusion Visualizer**, examine the 8-row by 32-bit grid:
+     - Unchanged bits are rendered in subtle dark gray.
+     - Changed bits glow in amber with clear visual contrast.
+     - Hover over any bit cell to inspect its bit position (0 to 255), original value, modified value, and flip state.
 
 ---
 
 ### Module 4: Multi-Bit Flip Experiment
-- **Goal:** Perturb multiple distinct input bits simultaneously.
-- **Steps:**
-  1. Open **4_Multi_Bit_Experiment**.
-  2. Choose **Random Bit Sampling** or **Manual Bit Specification**.
-  3. If random, choose $k$ bits to flip and toggle deterministic RNG seed.
-  4. If manual, enter comma-separated indices (e.g. `0, 8, 16`).
-  5. Examine whether flipping 10 bits produces a higher avalanche than flipping 1 bit (answer: diffusion remains centered near 50%).
+- **Objective:** Perturb multiple distinct input bits simultaneously and investigate non-linear saturation.
+- **How to Use:**
+  1. Open **Multi-Bit Experiment**.
+  2. Choose either **Random Bit Sampling** or **Manual Bit Specification**:
+     - In **Random Mode**, choose the number of bits to flip ($k$) and optionally set an RNG seed for reproducible experiments.
+     - In **Manual Mode**, enter a comma-separated list of bit indices (e.g., `0, 8, 16, 24`).
+  3. Click **Execute Multi-Bit Experiment**.
+  4. Compare the baseline hash against the perturbed hash.
+  5. Note the key pedagogical takeaway: flipping 10 or 20 bits does not double the avalanche percentage; the output remains statistically centered near 50%, demonstrating rapid cryptographic saturation.
 
 ---
 
 ### Module 5: Avalanche Analyzer (Monte Carlo Lab)
-- **Goal:** Run statistical simulations to verify the binomial distribution around 50%.
-- **Steps:**
-  1. Open **5_Avalanche_Analyzer**.
-  2. Choose a sample size: 10, 50, 100, or custom trials (up to 500).
-  3. Choose **Independent Flips (Standard SAC)** or **Cumulative Mutation**.
-  4. Click **Run Monte Carlo Avalanche Simulation**.
-  5. Inspect the **Mean Avalanche**, **Standard Deviation**, and **Min/Max**.
-  6. View the interactive **Histogram**, **Trial Timeline**, and **Boxplot**.
-  7. Download the complete dataset as a CSV file.
+- **Objective:** Execute statistical simulations to verify the empirical binomial distribution around 50% ($128$ bits).
+- **How to Use:**
+  1. Open **Avalanche Analyzer**.
+  2. Select a trial count: 10, 50, 100, or custom (up to 500 trials).
+  3. Select a trial mode:
+     - **Independent Flips (Strict Avalanche Criterion):** Each trial flips a random bit in the original baseline text.
+     - **Cumulative Mutation:** Each trial mutates the text from the previous trial sequentially.
+  4. Click **Run Monte Carlo Simulation**.
+  5. Inspect statistical summary metrics:
+     - **Mean Avalanche Percentage:** Typically $49.5\% - 50.5\%$.
+     - **Standard Deviation:** Approximately $3.1\%$, closely matching theoretical prediction $\sigma = \sqrt{256 \times 0.25} / 256 \approx 3.125\%$.
+     - **Minimum & Maximum Avalanche:** Observed extremes across the trial run.
+  6. Analyze interactive Recharts visualizations:
+     - **Frequency Histogram:** Shows empirical trial distribution against the theoretical 50% normal curve.
+     - **Trial Timeline Scatter Plot:** Displays individual trial data points and deviation from the mean.
+  7. Click **Export CSV** to download the complete trial dataset for further analysis in spreadsheet or data science tools.
 
 ---
 
 ### Module 6: File Integrity Lab
-- **Goal:** Detect single-byte tampering in files and verify vendor checksums.
-- **Scenarios:**
-  - **Single File Fingerprinting:** Upload any file up to 50MB to view its SHA-256 and SHA3-256 checksums.
-  - **Two-File Comparison:** Upload two versions of a document to check for bit alterations.
-  - **Vendor Reference Hash:** Paste an expected checksum (e.g., from an ISO or release manifest) and upload a file to confirm authenticity.
+- **Objective:** Detect single-byte tampering in files and verify vendor checksums using memory-efficient streaming hashing.
+- **Workflows:**
+  - **Single File Fingerprinting:** Upload any file to compute its SHA-256 and SHA3-256 fingerprints in 64KB streaming chunks.
+  - **Two-File Comparison:** Upload an original file and a suspect file. HashForge performs a byte-by-byte comparison, flags any parity mismatches, and displays the differing hashes.
+  - **Vendor Reference Checksum Validation:** Paste an official SHA-256 checksum from a software publisher and upload a downloaded file to verify cryptographic authenticity.
 
 ---
 
-### Module 7: Learning Center & Cryptography Quiz
-- **Goal:** Master core cryptography concepts and evaluate your knowledge.
-- **Steps:**
-  1. Open **7_Learning_Center**.
-  2. Read through the 12 curriculum expanders (including why SHA-256 is not suitable for passwords).
-  3. Switch to the **Interactive Knowledge Check Quiz** tab.
-  4. Answer all 10 questions and click **Submit Quiz & Calculate Score** to view detailed explanations and your grade.
+### Module 7: Learning Center & Knowledge Evaluation
+- **Objective:** Study cryptographic theory and test comprehension through an interactive quiz.
+- **Features:**
+  1. **Curriculum Modules:** Read through 12 structured topics covering hash fundamentals, the Strict Avalanche Criterion, Merkle-Damgård vs Sponge constructions, pre-image resistance, collision resistance, blockchain Merkle trees, software supply chain security, and why general-purpose hashes must not be used for password hashing.
+  2. **Evaluation Quiz:** Take the 10-question evaluation quiz covering practical and theoretical concepts. Click **Submit Quiz** to receive an immediate grade, status badges, and detailed answer explanations.
 
+---
+
+## 3. Running Automated Tests
+
+### 3.1 Backend Tests (Pytest)
+```powershell
+cd c:\Users\priyanshu\PROJECTS\HASHFORGE
+python -m pytest tests/ -v
+```
+Verifies all 70 Python test cases across the core cryptographic engine and the FastAPI REST routes.
+
+### 3.2 Frontend Tests (Vitest)
+```powershell
+cd c:\Users\priyanshu\PROJECTS\HASHFORGE\frontend
+npm run test
+```
+Executes all 10 React component tests, verifying bit grid rendering, hash formatting, and zero-emoji compliance.
+
+### 3.3 Production Frontend Build
+```powershell
+cd c:\Users\priyanshu\PROJECTS\HASHFORGE\frontend
+npm run build
+```
+Typechecks TypeScript and builds optimized production assets in `frontend/dist/`.

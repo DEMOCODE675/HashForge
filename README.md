@@ -1,59 +1,54 @@
-# 🛡️ HashForge
+# 🛡️ HashForge — Enterprise Cryptography Laboratory
 
-> **An Interactive Cryptographic Hashing and Avalanche Effect Visualization Laboratory Using SHA-256 and SHA3-256**
+> **An Interactive Cryptographic Hashing and Avalanche Effect Visualization Laboratory Using SHA-256 and SHA3-256**  
+> *Modern Full-Stack Architecture: React 19 • TypeScript • Tailwind CSS • Lucide React • Recharts • FastAPI • Python 3.13*
 
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
+[![React 19](https://img.shields.io/badge/Frontend-React%2019-61DAFB.svg)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0%2B-3178C6.svg)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind%20CSS-38B2AC.svg)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Streamlit](https://img.shields.io/badge/UI-Streamlit-red.svg)](https://streamlit.io/)
-[![Cryptography: FIPS](https://img.shields.io/badge/Cryptography-FIPS%20180--4%20%2F%20FIPS%20202-green.svg)](https://csrc.nist.gov/)
-[![Tests: Pytest](https://img.shields.io/badge/Tests-53%20Passed%20(100%25)-brightgreen.svg)](tests/)
+[![Python Tests: 70 Passed](https://img.shields.io/badge/Pytest-70%20Passed%20(100%25)-brightgreen.svg)](tests/)
+[![Frontend Tests: 10 Passed](https://img.shields.io/badge/Vitest-10%20Passed%20(100%25)-brightgreen.svg)](frontend/)
 
 ---
 
-## 📌 Executive Summary & Problem Statement
+## 📌 Executive Summary
 
-In academic computer science and cybersecurity education, students frequently master the abstract definitions of cryptographic hashing—preimage resistance, second preimage resistance, and collision resistance—yet struggle to visualize the **Strict Avalanche Criterion (SAC)**.
+**HashForge** is a modern, high-performance cybersecurity web application engineered to demonstrate the **Strict Avalanche Criterion (SAC)**, bit perturbation mechanics, and data integrity verification using **SHA-256** (FIPS 180-4) and **SHA3-256** (FIPS 202).
 
-The core cognitive hurdle is intuitive: *How does flipping a single microscopic bit (or even 1 in 10,000 bits) in an input string cause approximately 50% of the output bits to flip in an entirely pseudo-random, uncorrelated cascade?*
+It replaces static command-line digests with an interactive visual laboratory inspired by developer tools like Linear, Vercel, and Raycast.
 
-**HashForge** was built to solve this problem. It provides an interactive laboratory for exploring, testing, and visualizing the cryptographic avalanche effect and data integrity behaviors of two foundational standards:
-- **SHA-256** (FIPS 180-4, Merkle-Damgård iterative compression)
-- **SHA3-256** (FIPS 202, Keccak Permutation-based Sponge construction)
-
-> **Academic Disclaimer:** HashForge is an educational laboratory designed for university coursework, cybersecurity training, and research demonstrations. It uses standard FIPS implementations from Python's standard `hashlib` library and does not invent proprietary cryptographic algorithms.
+### Strict Design System Highlights:
+- **Zero Emojis in UI:** Navigation, status indicators, and actions are rendered as semantic SVG components from **Lucide React**.
+- **Dark-First Cybersecurity Palette:**
+  - Main Canvas: `#0B0F17`
+  - Sidebar: `#0D1420`
+  - Content Cards: `#111827`
+  - Elevated Surfaces: `#172033`
+  - Subtle Borders: `#253247`
+  - Accent Cyan: `#00D6C9`
+  - Accent Emerald: `#10B981`
+  - Warning Amber: `#F59E0B`
+  - Error Rose: `#EF4444`
+- **Big-Endian / Network Bit Indexing:** Strictly standardizes on network bit order ($i = \lfloor k/8 \rfloor$, $b = 7 - (k \bmod 8)$), where bit 0 is the Most Significant Bit (MSB, weight 128) of Byte 0, inverted via exact bitwise XOR (`byte ^ (1 << b)`).
+- **100% Local Cryptography:** All cryptographic computations execute via standard library `hashlib` C-bindings without external network dependencies or synthetic data.
 
 ---
 
-## 🔬 Core Features & Laboratory Modules
+## 🔬 Laboratory Modules
 
-| Module | Name | Capability |
+| Module | Purpose | Key Capabilities |
 |---|---|---|
-| **Module 1** | **Hash Generator** | Live dual SHA-256 and SHA3-256 computation, live byte counters, chunked hexadecimal breakdown, raw 256-bit binary, and text export. |
-| **Module 2** | **Algorithm Lab** | Side-by-side comparison of Merkle-Damgård vs Keccak Sponge architectures, cross-algorithm Hamming distance, and multi-iteration execution benchmarks. |
-| **Module 3** | **Single-Bit Flip Lab** | Interactive single-bit XOR perturbation ($0 \le k < 8N$) with 256-bit color-coded visualizer showing glowing changed bits. |
-| **Module 4** | **Multi-Bit Flip Lab** | Perturb $k$ distinct bit positions simultaneously via pseudo-random sampling (with reproducible seed) or manual index entry. |
-| **Module 5** | **Avalanche Analyzer** | 10 to 500-trial Monte Carlo simulations with interactive Plotly histograms, trial-by-trial scatter lines, standard deviation, and CSV export. |
-| **Module 6** | **File Integrity Lab** | Streaming 64KB chunk-based file hashing (up to 50MB), single-byte tamper detection, and vendor reference checksum verification. |
-| **Module 7** | **Learning Center** | 12 structured curriculum modules, real-world blockchain & supply chain case studies, and an interactive 10-question evaluation quiz. |
-
----
-
-## 📐 Mathematical Foundations
-
-### 1. Big-Endian / Network Bit Indexing
-HashForge strictly standardizes on network bit order:
-$$\text{Byte Index } i = \lfloor k / 8 \rfloor, \quad \text{Bit Offset } b = 7 - (k \bmod 8)$$
-- **Bit 0**: Most Significant Bit (MSB, $2^7 = 128$) of Byte 0.
-- **Bit 7**: Least Significant Bit (LSB, $2^0 = 1$) of Byte 0.
-- **Bit Inversion**: Executed via exact bitwise XOR: `byte ^ (1 << b)`.
-
-### 2. Hamming Distance
-The distance $D(H_1, H_2)$ counts differing positions between two binary sequences of equal length $n = 256$:
-$$D(H_1, H_2) = \sum_{j=0}^{n-1} (H_1[j] \oplus H_2[j])$$
-
-### 3. Avalanche Effect Percentage
-$$\text{Avalanche } \% = \left(\frac{D(H_1, H_2)}{256}\right) \times 100\%$$
-- **Ideal Diffusion (SAC):** $\mathbb{E}[D] = 128 \text{ bits } (50.00\%)$.
+| **Dashboard** | Overview & Quick Test | High-level metrics, system architecture summary, quick SHA-256 calculation widget. |
+| **Module 1: Hash Generator** | Primary Hashing | Real-time dual SHA-256 & SHA3-256 computation, live byte and bit counts, chunked hex view, raw binary view, copy helper, and `.txt` file export. |
+| **Module 2: Algorithm Lab** | Architecture Comparison | Merkle-Damgård vs Keccak Sponge comparison, cross-algorithm Hamming divergence, and local multi-iteration latency benchmarks (µs precision). |
+| **Module 3: Single-Bit Experiment** | Diffusion Visualization | Invert exactly 1 input bit ($0 \le k < 8N$) and visualize the cascade across the **256-bit organized grid** with glowing amber highlights for flipped bits. |
+| **Module 4: Multi-Bit Experiment** | Saturation Analysis | Perturb $k$ bits simultaneously using pseudo-random sampling (with reproducible seed) or manual bit specification. |
+| **Module 5: Avalanche Analyzer** | Monte Carlo Lab | 10 to 500-trial statistical simulations with Recharts histograms, trial dispersion scatter lines, boxplots, and complete CSV report export. |
+| **Module 6: File Integrity Lab** | Streaming Verification | Memory-safe 64KB streaming file hashing, single-byte tamper detection, and vendor reference hash validation. |
+| **Module 7: Learning Center** | Curriculum & Evaluation | 12 structured curriculum topics (including why SHA-256 is not for password storage) and an interactive 10-question evaluation quiz with instant grading. |
 
 ---
 
@@ -61,52 +56,60 @@ $$\text{Avalanche } \% = \left(\frac{D(H_1, H_2)}{256}\right) \times 100\%$$
 
 ```
 HashForge/
-├── app.py                      # Main Home Dashboard & Platform Router
-├── requirements.txt            # Minimal verified dependencies
-├── LICENSE                     # MIT License
-├── README.md                   # Repository Guide
-├── DEVELOPMENT_PROGRESS.md     # Development & Phase Milestone Log
-├── .streamlit/
-│   └── config.toml             # Dark cybersecurity theme configuration
-├── core/                       # Cryptographic & Mathematical Engine (UI-free)
-│   ├── __init__.py
-│   ├── hash_engine.py          # FIPS SHA-256 and SHA3-256 wrappers & timing
-│   ├── bit_operations.py       # Big-endian bit manipulation & XOR perturbation
-│   ├── avalanche.py            # Hamming distance & avalanche formulas
-│   ├── experiments.py          # Monte Carlo simulation & trial runners
+├── backend/                    # Python FastAPI REST Service
+│   ├── main.py                 # FastAPI Application & CORS configuration
+│   ├── requirements.txt        # Backend dependencies
+│   └── api/
+│       ├── schemas/            # Strict Pydantic v2 validation models
+│       │   ├── hash_schemas.py
+│       │   ├── experiment_schemas.py
+│       │   ├── avalanche_schemas.py
+│       │   └── file_schemas.py
+│       └── routes/             # REST Route Handlers
+│           ├── hash_routes.py
+│           ├── experiment_routes.py
+│           ├── avalanche_routes.py
+│           ├── file_routes.py
+│           └── health_routes.py
+│
+├── frontend/                   # Modern React 19 SPA (Vite + TypeScript)
+│   ├── package.json
+│   ├── vite.config.ts          # Vite & Vitest configuration with /api proxy
+│   ├── tailwind.config.js      # Custom cybersecurity design tokens
+│   └── src/
+│       ├── types/              # TypeScript API & Domain Interfaces
+│       ├── services/           # Typed API Client (fetch with error mapping)
+│       ├── components/
+│       │   ├── layout/         # AppShell, Sidebar, TopHeader
+│       │   ├── binary/         # BitGrid256, BinaryStreamViewer
+│       │   ├── charts/         # AvalancheHistogram, TrialTimelineChart, AlgorithmComparisonBox
+│       │   └── shared/         # MetricCard, HashBox, StatusBadge
+│       ├── pages/              # 8 Module Views (Dashboard + Modules 1–7)
+│       └── test/               # Vitest & Testing Library Test Suite
+│
+├── core/                       # Preserved Cryptographic Core (UI-free)
+│   ├── hash_engine.py          # SHA-256 & SHA3-256 wrappers
+│   ├── bit_operations.py       # Big-Endian XOR manipulation
+│   ├── avalanche.py            # Hamming distance & SAC formulas
+│   ├── experiments.py          # Monte Carlo trial runners
 │   ├── file_integrity.py       # 64KB chunked streaming file hashing
-│   └── validators.py           # Input sanitization and bounds checking
-├── components/                 # Presentation & Visualization Layer
-│   ├── __init__.py
-│   ├── sidebar.py              # Navigation and CSS injector
-│   ├── metric_cards.py         # Visual stat cards
-│   ├── bit_visualizer.py       # 256-bit grid with changed-bit highlighting
-│   ├── hash_display.py         # Formatted hex & binary cards
-│   ├── comparison.py           # Side-by-side diff widgets
-│   └── charts.py               # Plotly interactive histograms & dispersion lines
-├── pages/                      # Multi-Page Streamlit Laboratory Modules
-│   ├── 1_Hash_Generator.py
-│   ├── 2_Algorithm_Lab.py
-│   ├── 3_Single_Bit_Experiment.py
-│   ├── 4_Multi_Bit_Experiment.py
-│   ├── 5_Avalanche_Analyzer.py
-│   ├── 6_File_Integrity.py
-│   └── 7_Learning_Center.py
-├── tests/                      # Automated Pytest Suite
-│   ├── test_hash_engine.py     # NIST test vectors & behavioral tests
-│   ├── test_bit_operations.py  # Bit boundaries & XOR verification
-│   ├── test_avalanche.py       # Distance formulas & diff masks
-│   ├── test_experiments.py     # Reproducible seeded simulations
+│   └── validators.py           # Bounds and type guardrails
+│
+├── tests/                      # Automated Pytest Suite (70 Tests)
+│   ├── test_backend_api.py     # FastAPI endpoint integration tests
+│   ├── test_hash_engine.py     # NIST standard test vectors
+│   ├── test_bit_operations.py  # Bit boundary & XOR verification
+│   ├── test_avalanche.py       # Distance formulas & SAC bounds
+│   ├── test_experiments.py     # Seed reproducibility & baseline resets
 │   ├── test_file_integrity.py  # Streaming chunks & tamper detection
-│   └── test_validators.py      # Input validation & boundary guardrails
-├── assets/
-│   ├── logo.svg                # Vector cryptographic anvil/block logo
-│   └── custom.css              # Cyberpunk dark theme stylesheet
-└── docs/
-    ├── PROJECT_REPORT.md       # Comprehensive academic project report
-    ├── ARCHITECTURE.md         # Detailed architectural specification
-    ├── USER_GUIDE.md           # Step-by-step user manual
-    └── TESTING.md              # QA test matrix & verification report
+│   └── test_validators.py      # Guardrails & exception handling
+│
+├── docs/                       # Academic & Technical Documentation
+│   ├── PROJECT_REPORT.md       # 13-section academic project report
+│   ├── ARCHITECTURE.md         # Full-stack architectural specification
+│   ├── USER_GUIDE.md           # Step-by-step user manual
+│   └── TESTING.md              # Quality assurance & test matrix
+└── DEVELOPMENT_PROGRESS.md     # Milestone tracking log
 ```
 
 ---
@@ -114,66 +117,71 @@ HashForge/
 ## ⚡ Quick Start
 
 ### 1. Prerequisites
-- Python 3.11 or newer (tested on Python 3.13)
-- Modern web browser (Chrome, Firefox, Safari, Edge)
+- **Python:** 3.11 or newer (tested on Python 3.13)
+- **Node.js:** 18 or newer (tested on Node v24.18)
 
-### 2. Clone & Setup Environment
-```bash
-git clone https://github.com/your-username/HashForge.git
-cd HashForge
+---
 
-# Create and activate virtual environment (optional but recommended)
-python -m venv .venv
-# On Windows:
-.venv\Scripts\activate
-# On Linux/macOS:
-source .venv/bin/activate
-
-# Install dependencies
+### 2. Start the Backend API (FastAPI)
+```powershell
+# In root directory:
 python -m pip install -r requirements.txt
+python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ```
+The REST API will be accessible at:
+- **API Base:** `http://127.0.0.1:8000`
+- **Interactive Swagger Docs:** `http://127.0.0.1:8000/docs`
+- **ReDoc:** `http://127.0.0.1:8000/redoc`
 
-### 3. Launch the Application
-```bash
-python -m streamlit run app.py
+---
+
+### 3. Start the Frontend (React + Vite)
+In a new terminal window:
+```powershell
+cd frontend
+npm install
+npm run dev
 ```
-Open your browser to `http://localhost:8501`.
+Open **`http://localhost:5173`** in your browser.
 
 ---
 
 ## 🧪 Automated Testing
 
-HashForge includes a rigorous 53-test automated test suite validating NIST standard test vectors, bit boundaries, and statistical distributions:
-
-```bash
-# Run full test suite with verbose output
+### 1. Python Backend & Core Engine (Pytest)
+```powershell
 python -m pytest tests/ -v
 ```
+**70 passed in 1.95s (100% success rate)**:
+- 17 FastAPI REST endpoint integration tests (`test_backend_api.py`)
+- 12 NIST standard vector tests (`test_hash_engine.py`)
+- 13 Bit-boundary & XOR tests (`test_bit_operations.py`)
+- 8 Hamming distance & SAC tests (`test_avalanche.py`)
+- 4 Monte Carlo simulation tests (`test_experiments.py`)
+- 6 Streaming file integrity tests (`test_file_integrity.py`)
+- 10 Input validation guardrail tests (`test_validators.py`)
 
-### Test Suite Summary:
+### 2. Frontend Test Suite (Vitest)
+```powershell
+cd frontend
+npm run test
 ```
-============================= 53 passed in 0.37s ==============================
-- tests/test_hash_engine.py:      12 passed (NIST vectors for "", "abc", fox)
-- tests/test_bit_operations.py:   13 passed (MSB, LSB, middle, multi-flip)
-- tests/test_avalanche.py:         8 passed (Hamming distance, SAC bounds)
-- tests/test_experiments.py:       4 passed (Monte Carlo seed reproducibility)
-- tests/test_file_integrity.py:    6 passed (Streaming chunking, tamper flags)
-- tests/test_validators.py:       10 passed (Guardrails, bounds, type checks)
+**10 passed (100% success rate)**:
+- `Navigation.test.tsx`: Route switching, zero-emoji verification, sidebar controls.
+- `BitGrid256.test.tsx`: 256-bit matrix rendering, row labels, flipped vs unchanged counts.
+- `HashBox.test.tsx`: Chunked view toggling, hex rendering, clipboard copying.
+
+### 3. TypeScript Compilation & Production Build
+```powershell
+cd frontend
+npm run typecheck
+npm run build
 ```
-
----
-
-## 🛡️ Security & Performance Guardrails
-
-- **Zero Remote Dependencies:** All cryptographic computations run 100% locally on your CPU. No data is sent to external APIs or cloud servers.
-- **Streaming Hashing:** File uploads are hashed via streaming 64KB buffers (`hashlib.update()`), never buffering multi-gigabyte files into RAM.
-- **Safe Memory Processing:** Uploaded files exist only in volatile runtime memory during hashing and are never persisted to disk.
-- **Password Storage Disclaimer:** The platform explicitly teaches why high-throughput general hashes (SHA-256) are vulnerable to GPU brute-forcing and demonstrates why memory-hard KDFs (Argon2id, bcrypt, scrypt) are required for passwords.
+Build output: `dist/index.html` (0.90 kB), `dist/assets/index.js` (built in 4.06s).
 
 ---
 
 ## 📄 License & Attribution
 
-This project is released under the **MIT License**. See [LICENSE](LICENSE) for details.
-Built for university demonstrations, open-source education, and cryptographic experimentation.
-
+HashForge is open-source software licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
+Designed for university presentations, cybersecurity coursework, and cryptographic research demonstrations.
