@@ -2,18 +2,35 @@
 
 import random
 from fastapi import APIRouter, HTTPException
-from backend.api.schemas.experiment_schemas import (
-    SingleBitRequest,
-    SingleBitResponse,
-    MultiBitRequest,
-    MultiBitRandomRequest,
-    MultiBitResponse,
-    AvalancheMetricsSchema,
-)
-from backend.api.schemas.hash_schemas import HashResponse
-from core.experiments import run_single_bit_trial, run_multi_bit_trial
-from core.bit_operations import text_to_bytes, bytes_to_bits
-from core.validators import ValidationError
+try:
+    from backend.api.schemas.experiment_schemas import (
+        SingleBitRequest,
+        SingleBitResponse,
+        MultiBitRequest,
+        MultiBitRandomRequest,
+        MultiBitResponse,
+        AvalancheMetricsSchema,
+    )
+    from backend.api.schemas.hash_schemas import HashResponse
+except ImportError:
+    from api.schemas.experiment_schemas import (
+        SingleBitRequest,
+        SingleBitResponse,
+        MultiBitRequest,
+        MultiBitRandomRequest,
+        MultiBitResponse,
+        AvalancheMetricsSchema,
+    )
+    from api.schemas.hash_schemas import HashResponse
+
+try:
+    from core.experiments import run_single_bit_trial, run_multi_bit_trial
+    from core.bit_operations import text_to_bytes, bytes_to_bits
+    from core.validators import ValidationError
+except ImportError:
+    from backend.core.experiments import run_single_bit_trial, run_multi_bit_trial
+    from backend.core.bit_operations import text_to_bytes, bytes_to_bits
+    from backend.core.validators import ValidationError
 
 router = APIRouter(prefix="/experiments", tags=["Bit Experiments"])
 

@@ -2,17 +2,33 @@
 
 import time
 from fastapi import APIRouter, HTTPException
-from backend.api.schemas.hash_schemas import (
-    HashRequest,
-    HashResponse,
-    AlgorithmCompareRequest,
-    AlgorithmCompareResponse,
-    AlgorithmBenchmarkInfo,
-)
-from core.hash_engine import compute_hash, HashResult
-from core.bit_operations import text_to_bytes
-from core.avalanche import hamming_distance, avalanche_percentage
-from core.validators import ValidationError
+try:
+    from backend.api.schemas.hash_schemas import (
+        HashRequest,
+        HashResponse,
+        AlgorithmCompareRequest,
+        AlgorithmCompareResponse,
+        AlgorithmBenchmarkInfo,
+    )
+except ImportError:
+    from api.schemas.hash_schemas import (
+        HashRequest,
+        HashResponse,
+        AlgorithmCompareRequest,
+        AlgorithmCompareResponse,
+        AlgorithmBenchmarkInfo,
+    )
+
+try:
+    from core.hash_engine import compute_hash, HashResult
+    from core.bit_operations import text_to_bytes
+    from core.avalanche import hamming_distance, avalanche_percentage
+    from core.validators import ValidationError
+except ImportError:
+    from backend.core.hash_engine import compute_hash, HashResult
+    from backend.core.bit_operations import text_to_bytes
+    from backend.core.avalanche import hamming_distance, avalanche_percentage
+    from backend.core.validators import ValidationError
 
 router = APIRouter(prefix="/hash", tags=["Hashing"])
 

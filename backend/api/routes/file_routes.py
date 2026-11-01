@@ -2,8 +2,15 @@
 
 from typing import Optional
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from backend.api.schemas.file_schemas import FileHashResponse, FileCompareResponse
-from core.file_integrity import hash_file_stream, compare_file_hashes
+try:
+    from backend.api.schemas.file_schemas import FileHashResponse, FileCompareResponse
+except ImportError:
+    from api.schemas.file_schemas import FileHashResponse, FileCompareResponse
+
+try:
+    from core.file_integrity import hash_file_stream, compare_file_hashes
+except ImportError:
+    from backend.core.file_integrity import hash_file_stream, compare_file_hashes
 
 router = APIRouter(prefix="/files", tags=["File Integrity"])
 

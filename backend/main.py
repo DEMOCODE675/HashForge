@@ -5,6 +5,7 @@ Exposes the cryptographic engine and experiment runners to modern web frontends.
 
 import os
 import sys
+import types
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,9 +14,16 @@ from fastapi.responses import JSONResponse, RedirectResponse
 # Ensure both backend directory and root directory are on Python path
 CURRENT_DIR = Path(__file__).resolve().parent
 PARENT_DIR = CURRENT_DIR.parent
-for p in (str(PARENT_DIR), str(CURRENT_DIR)):
+for p in (str(CURRENT_DIR), str(PARENT_DIR)):
     if p not in sys.path:
         sys.path.insert(0, p)
+
+# Self-alias 'backend' in sys.modules so 'backend.api' ALWAYS resolves,
+# even inside isolated Vercel serverless containers where root is backend/
+if "backend" not in sys.modules:
+    backend_pkg = types.ModuleType("backend")
+    backend_pkg.__path__ = [str(CURRENT_DIR)]
+    sys.modules["backend"] = backend_pkg
 
 try:
     from backend.api.routes import (
@@ -34,7 +42,10 @@ except ImportError:
         health_router,
     )
 
-from core.validators import ValidationError
+try:
+    from core.validators import ValidationError
+except ImportError:
+    from backend.core.validators import ValidationError
 
 app = FastAPI(
     title="HashForge Cryptographic API",
@@ -44,6 +55,19 @@ app = FastAPI(
     redoc_url="/api/redoc",
     openapi_url="/api/openapi.json",
 )
+
+@app.get("/health", tags=["Health"])
+@app.get("/api/health", tags=["Health"])
+def direct_health_check():
+    """Direct root health check endpoint for Vercel deployment verification."""
+    return {
+        "status": "healthy",
+        "service": "HashForge Cryptographic Backend",
+        "version": "2.0.0",
+        "algorithms": ["sha256", "sha3_256"],
+        "bit_indexing": "Big-Endian (Network Order)",
+        "fips_compliant": True,
+    }
 
 @app.get("/docs", include_in_schema=False)
 def docs_redirect():
@@ -82,12 +106,18 @@ async def validation_error_handler(request: Request, exc: ValidationError):
     )
 
 
-# Mount API routers
+# Mount API routers (both with /api prefix and without for full proxy compatibility)
 app.include_router(health_router, prefix="/api")
 app.include_router(hash_router, prefix="/api")
 app.include_router(experiment_router, prefix="/api")
 app.include_router(avalanche_router, prefix="/api")
 app.include_router(file_router, prefix="/api")
+
+app.include_router(health_router)
+app.include_router(hash_router)
+app.include_router(experiment_router)
+app.include_router(avalanche_router)
+app.include_router(file_router)
 
 
 @app.get("/")

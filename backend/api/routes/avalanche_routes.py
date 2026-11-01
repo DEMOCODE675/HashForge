@@ -2,14 +2,27 @@
 
 from typing import Union
 from fastapi import APIRouter, HTTPException
-from backend.api.schemas.avalanche_schemas import (
-    AvalancheSimulationRequest,
-    AvalancheSimulationResponse,
-    ComparativeSimulationResponse,
-    TrialRecordSchema,
-)
-from core.experiments import run_avalanche_simulation, run_comparative_simulation
-from core.validators import ValidationError
+try:
+    from backend.api.schemas.avalanche_schemas import (
+        AvalancheSimulationRequest,
+        AvalancheSimulationResponse,
+        ComparativeSimulationResponse,
+        TrialRecordSchema,
+    )
+except ImportError:
+    from api.schemas.avalanche_schemas import (
+        AvalancheSimulationRequest,
+        AvalancheSimulationResponse,
+        ComparativeSimulationResponse,
+        TrialRecordSchema,
+    )
+
+try:
+    from core.experiments import run_avalanche_simulation, run_comparative_simulation
+    from core.validators import ValidationError
+except ImportError:
+    from backend.core.experiments import run_avalanche_simulation, run_comparative_simulation
+    from backend.core.validators import ValidationError
 
 router = APIRouter(prefix="/experiments", tags=["Avalanche Analytics"])
 
