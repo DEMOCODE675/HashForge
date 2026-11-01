@@ -132,3 +132,4 @@ Prepare for these common technical questions from judges or reviewers:
 
 #### Q3: "Can HashForge's SHA-256 engine be used for password storage?"
 - **Answer:** Absolutely not! As emphasized in Module 7 of HashForge, fast cryptographic hashes like SHA-256 are dangerous for passwords because modern GPUs can compute billions of hashes per second. For password storage, systems must use memory-hard, adaptive algorithms like **Argon2id**, **bcrypt**, or **scrypt**.
+
