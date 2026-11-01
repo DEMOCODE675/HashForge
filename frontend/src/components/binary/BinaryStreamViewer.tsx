@@ -46,8 +46,8 @@ export const BinaryStreamViewer: React.FC<BinaryStreamViewerProps> = ({
             <span className="text-[11px] text-accent-cyan font-normal">{originalBinary.length} Bits</span>
           </div>
 
-          <div className="text-text-muted mb-2">
-            Hex: <span className="text-text-primary">{originalBytesHex}</span>
+          <div className="text-text-muted mb-2 break-all">
+            Hex: <span className="text-text-primary font-bold">{originalBytesHex}</span>
           </div>
 
           <div className="flex flex-wrap gap-1.5 leading-relaxed">
@@ -73,8 +73,8 @@ export const BinaryStreamViewer: React.FC<BinaryStreamViewerProps> = ({
               </span>
             </div>
 
-            <div className="text-text-muted mb-2">
-              Hex: <span className="text-accent-amber">{modifiedBytesHex}</span>
+            <div className="text-text-muted mb-2 break-all">
+              Hex: <span className="text-accent-amber font-bold">{modifiedBytesHex}</span>
             </div>
 
             <div className="flex flex-wrap gap-1.5 leading-relaxed">

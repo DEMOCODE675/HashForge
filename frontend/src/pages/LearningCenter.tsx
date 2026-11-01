@@ -86,11 +86,11 @@ export const LearningCenter: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-border-subtle pb-2">
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 border-b border-border-subtle pb-2">
         <button
           type="button"
           onClick={() => setActiveTab('curriculum')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+          className={`flex-1 sm:flex-none justify-center flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold transition-all min-h-[40px] ${
             activeTab === 'curriculum'
               ? 'bg-accent-cyan/15 text-accent-cyan border border-accent-cyan/40 shadow-cyan-glow'
               : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
@@ -103,7 +103,7 @@ export const LearningCenter: React.FC = () => {
         <button
           type="button"
           onClick={() => setActiveTab('quiz')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+          className={`flex-1 sm:flex-none justify-center flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold transition-all min-h-[40px] ${
             activeTab === 'quiz'
               ? 'bg-accent-emerald/15 text-accent-emerald border border-accent-emerald/40'
               : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
@@ -230,9 +230,9 @@ export const LearningCenter: React.FC = () => {
                         <div
                           key={optIdx}
                           onClick={() => handleSelectOption(q.id, optIdx)}
-                          className={`p-3 rounded-lg border text-xs cursor-pointer transition-all flex items-center justify-between ${optionStyle}`}
+                          className={`p-3 rounded-lg border text-xs cursor-pointer transition-all flex items-center justify-between gap-3 min-h-[44px] ${optionStyle}`}
                         >
-                          <span>{opt}</span>
+                          <span className="leading-relaxed">{opt}</span>
                           {quizSubmitted && optIdx === q.correct_index && (
                             <CheckCircle2 className="w-4 h-4 text-accent-emerald flex-shrink-0" />
                           )}
@@ -245,7 +245,7 @@ export const LearningCenter: React.FC = () => {
                   </div>
 
                   {quizSubmitted && (
-                    <div className="p-3 rounded-lg bg-[#070A10] border border-border-subtle text-xs text-text-muted mt-3">
+                    <div className="p-3 rounded-lg bg-[#070A10] border border-border-subtle text-xs text-text-muted mt-3 leading-relaxed">
                       <strong className="text-text-primary">Explanation: </strong>
                       {q.explanation}
                     </div>
@@ -261,7 +261,7 @@ export const LearningCenter: React.FC = () => {
                 type="button"
                 onClick={handleQuizSubmit}
                 disabled={Object.keys(selectedAnswers).length < quizQuestions.length}
-                className="inline-flex items-center gap-2 px-8 py-3 rounded-lg bg-accent-cyan hover:bg-accent-cyan/90 text-bg-primary font-bold text-xs tracking-wider uppercase transition-all shadow-cyan-glow disabled:opacity-50"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg bg-accent-cyan hover:bg-accent-cyan/90 text-bg-primary font-bold text-xs tracking-wider uppercase transition-all shadow-cyan-glow disabled:opacity-50 min-h-[44px]"
               >
                 <span>Submit Evaluation ({Object.keys(selectedAnswers).length}/{quizQuestions.length} Answered)</span>
               </button>

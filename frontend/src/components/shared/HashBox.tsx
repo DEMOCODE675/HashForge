@@ -64,7 +64,7 @@ export const HashBox: React.FC<HashBoxProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <StatusBadge variant={isSha3 ? 'emerald' : 'cyan'}>
             {algorithm.toUpperCase()}
           </StatusBadge>
@@ -73,7 +73,7 @@ export const HashBox: React.FC<HashBoxProps> = ({
             <button
               type="button"
               onClick={() => setViewMode('hex')}
-              className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
+              className={`px-2.5 py-1.5 rounded-md font-medium transition-colors min-h-[30px] ${
                 viewMode === 'hex' ? 'bg-bg-card text-accent-cyan' : 'text-text-secondary hover:text-text-primary'
               }`}
             >
@@ -82,7 +82,7 @@ export const HashBox: React.FC<HashBoxProps> = ({
             <button
               type="button"
               onClick={() => setViewMode('chunked')}
-              className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
+              className={`px-2.5 py-1.5 rounded-md font-medium transition-colors min-h-[30px] ${
                 viewMode === 'chunked' ? 'bg-bg-card text-accent-cyan' : 'text-text-secondary hover:text-text-primary'
               }`}
             >
@@ -92,7 +92,7 @@ export const HashBox: React.FC<HashBoxProps> = ({
               <button
                 type="button"
                 onClick={() => setViewMode('binary')}
-                className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
+                className={`px-2.5 py-1.5 rounded-md font-medium transition-colors min-h-[30px] ${
                   viewMode === 'binary' ? 'bg-bg-card text-accent-cyan' : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
@@ -114,11 +114,11 @@ export const HashBox: React.FC<HashBoxProps> = ({
           )}
         </div>
 
-        <div className="flex items-center justify-end gap-2 mt-3 pt-3 border-t border-border-subtle/50">
+        <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 mt-3 pt-3 border-t border-border-subtle/50">
           <button
             type="button"
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-text-secondary bg-bg-elevated hover:bg-bg-card hover:text-text-primary border border-border-subtle transition-all"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-text-secondary bg-bg-elevated hover:bg-bg-card hover:text-text-primary border border-border-subtle transition-all min-h-[36px]"
             title="Copy digest to clipboard"
           >
             {copied ? (
@@ -137,7 +137,7 @@ export const HashBox: React.FC<HashBoxProps> = ({
           <button
             type="button"
             onClick={handleDownload}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-text-secondary bg-bg-elevated hover:bg-bg-card hover:text-text-primary border border-border-subtle transition-all"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-text-secondary bg-bg-elevated hover:bg-bg-card hover:text-text-primary border border-border-subtle transition-all min-h-[36px]"
             title="Download digest as text file"
           >
             <Download className="w-3.5 h-3.5" />
@@ -147,7 +147,7 @@ export const HashBox: React.FC<HashBoxProps> = ({
       </div>
 
       {(executionTimeMs !== undefined || inputLengthBytes !== undefined) && (
-        <div className="flex items-center justify-between text-xs text-text-muted mt-3">
+        <div className="flex flex-wrap items-center justify-between gap-1 text-xs text-text-muted mt-3 font-mono-code">
           {inputLengthBytes !== undefined && (
             <span>Input Size: <strong className="text-text-secondary">{inputLengthBytes} bytes</strong></span>
           )}

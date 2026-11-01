@@ -178,7 +178,7 @@ export const AvalancheAnalyzer: React.FC = () => {
             type="button"
             onClick={runSimulation}
             disabled={loading}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-accent-cyan hover:bg-accent-cyan/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all shadow-cyan-glow"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-accent-cyan hover:bg-accent-cyan/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all shadow-cyan-glow min-h-[44px]"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span>{loading ? 'Simulating...' : 'Execute Monte Carlo Simulation'}</span>
@@ -329,8 +329,8 @@ export const AvalancheAnalyzer: React.FC = () => {
             </div>
           </div>
 
-          <div className="overflow-x-auto max-h-72 border border-border-subtle rounded-lg">
-            <table className="w-full text-left font-mono-code text-xs">
+          <div className="overflow-x-auto touch-pan-x max-h-72 border border-border-subtle rounded-lg">
+            <table className="w-full min-w-[520px] text-left font-mono-code text-xs">
               <thead className="bg-[#070A10] text-text-muted text-[11px] uppercase sticky top-0 border-b border-border-subtle">
                 <tr>
                   <th className="px-3 py-2">Trial #</th>

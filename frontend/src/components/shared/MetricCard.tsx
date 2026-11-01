@@ -58,8 +58,8 @@ export const MetricCard: React.FC<MetricCardProps> = ({
         )}
       </div>
 
-      <div className="flex items-baseline gap-2">
-        <div className={cn('text-2xl font-bold font-mono-code tracking-tight', valueColorStyles[accentColor])}>
+      <div className="flex items-baseline gap-2 flex-wrap">
+        <div className={cn('text-xl sm:text-2xl font-bold font-mono-code tracking-tight break-words', valueColorStyles[accentColor])}>
           {value}
         </div>
         {badge && (

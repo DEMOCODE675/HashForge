@@ -14,6 +14,7 @@ export const AppShell: React.FC<AppShellProps> = ({
   children,
 }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   const toggleTheme = () => {
@@ -28,11 +29,14 @@ export const AppShell: React.FC<AppShellProps> = ({
 
   return (
     <div className="min-h-screen bg-bg-primary text-text-primary flex antialiased">
+      {/* Sidebar with Desktop Collapse and Mobile Drawer */}
       <Sidebar
         activePage={activePage}
         onSelectPage={onSelectPage}
         collapsed={collapsed}
         onToggleCollapsed={() => setCollapsed(!collapsed)}
+        mobileOpen={mobileMenuOpen}
+        onCloseMobile={() => setMobileMenuOpen(false)}
       />
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -41,13 +45,13 @@ export const AppShell: React.FC<AppShellProps> = ({
           theme={theme}
           onToggleTheme={toggleTheme}
           onOpenDocs={() => onSelectPage('learning')}
+          onToggleMobileMenu={() => setMobileMenuOpen(!mobileMenuOpen)}
         />
 
-        <main className="flex-1 p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
+        <main className="flex-1 p-3 sm:p-5 lg:p-8 max-w-7xl w-full mx-auto space-y-6">
           {children}
         </main>
       </div>
     </div>
   );
 };
-

@@ -95,18 +95,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   return (
     <div className="space-y-6">
       {/* Hero Welcome Banner */}
-      <div className="bg-bg-card border border-border-subtle rounded-2xl p-6 lg:p-8 shadow-card relative overflow-hidden">
+      <div className="bg-bg-card border border-border-subtle rounded-2xl p-5 sm:p-6 lg:p-8 shadow-card relative overflow-hidden">
         <div className="max-w-3xl space-y-4">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <StatusBadge variant="cyan" icon="shield">FIPS Compliant Architecture</StatusBadge>
             <StatusBadge variant="emerald">Local Computation</StatusBadge>
           </div>
 
-          <h1 className="text-2xl lg:text-3xl font-bold tracking-tight text-text-primary">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-text-primary break-words">
             An Interactive Cryptographic Hashing and Avalanche Effect Laboratory
           </h1>
 
-          <p className="text-sm lg:text-base text-text-secondary leading-relaxed">
+          <p className="text-xs sm:text-sm lg:text-base text-text-secondary leading-relaxed">
             HashForge bridges the gap between abstract cryptography theory and empirical understanding.
             Investigate how microscopic 1-bit input perturbations cascade non-linearly through <strong>SHA-256</strong> (Merkle-Damgård)
             and <strong>SHA3-256</strong> (Keccak Sponge) to achieve the Strict Avalanche Criterion.
@@ -152,7 +152,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
       {/* Quick Hash Widget */}
       <div className="bg-bg-card border border-border-subtle rounded-xl p-5 shadow-card">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
           <div className="flex items-center gap-2">
             <Fingerprint className="w-4 h-4 text-accent-cyan" />
             <h3 className="text-sm font-semibold text-text-primary">Quick Hash Engine Test</h3>
@@ -172,7 +172,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             type="button"
             onClick={handleQuickHash}
             disabled={isHashing}
-            className="px-5 py-2.5 rounded-lg bg-accent-cyan hover:bg-accent-cyan/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all shadow-cyan-glow flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-accent-cyan hover:bg-accent-cyan/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all shadow-cyan-glow flex items-center justify-center gap-2 min-h-[42px]"
           >
             {isHashing ? 'Computing...' : 'Compute SHA-256'}
           </button>
@@ -235,23 +235,26 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       {/* Learning Center Banner */}
       <div
         onClick={() => onNavigate('learning')}
-        className="bg-gradient-to-r from-bg-card to-bg-elevated border border-border-subtle hover:border-accent-cyan/40 rounded-xl p-5 shadow-card cursor-pointer transition-all flex items-center justify-between group"
+        className="bg-gradient-to-r from-bg-card to-bg-elevated border border-border-subtle hover:border-accent-cyan/40 rounded-xl p-5 shadow-card cursor-pointer transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group"
       >
-        <div className="flex items-center gap-4">
-          <div className="p-3 rounded-xl bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30">
-            <BookOpen className="w-6 h-6" />
+        <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+          <div className="p-3 rounded-xl bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30 flex-shrink-0">
+            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-text-primary group-hover:text-accent-cyan transition-colors">
               Module 7: Cryptographic Learning Center & Knowledge Quiz
             </h3>
-            <p className="text-xs text-text-secondary mt-0.5">
+            <p className="text-xs text-text-secondary mt-0.5 leading-relaxed">
               12 curriculum topics covering hash mechanics, blockchain Merkle trees, and a 10-question evaluation quiz.
             </p>
           </div>
         </div>
 
-        <ArrowRight className="w-5 h-5 text-accent-cyan group-hover:translate-x-1.5 transition-transform" />
+        <div className="flex items-center gap-1 text-xs font-semibold text-accent-cyan sm:flex-shrink-0 self-end sm:self-auto">
+          <span className="sm:hidden">Explore</span>
+          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1.5 transition-transform" />
+        </div>
       </div>
     </div>
   );

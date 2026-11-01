@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Search,
+  Menu,
   SunMoon,
   BookOpen,
-  ShieldCheck,
   ChevronRight,
-  Wifi,
-  WifiOff,
+  ShieldCheck,
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { ActivePage } from './Sidebar';
@@ -16,6 +14,7 @@ interface TopHeaderProps {
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
   onOpenDocs: () => void;
+  onToggleMobileMenu?: () => void;
 }
 
 export const TopHeader: React.FC<TopHeaderProps> = ({
@@ -23,6 +22,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   theme,
   onToggleTheme,
   onOpenDocs,
+  onToggleMobileMenu,
 }) => {
   const [backendOnline, setBackendOnline] = useState<boolean | null>(null);
 
@@ -58,37 +58,61 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
   const current = pageTitles[activePage] || { title: 'Dashboard', category: 'Overview' };
 
   return (
-    <header className="h-16 px-6 bg-bg-primary/80 backdrop-blur-md border-b border-border-subtle flex items-center justify-between sticky top-0 z-20">
-      {/* Breadcrumb Trail */}
-      <div className="flex items-center gap-2 text-xs">
-        <span className="text-text-muted font-medium">HashForge</span>
-        <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
-        <span className="text-text-secondary font-medium">{current.category}</span>
-        <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
-        <span className="text-text-primary font-semibold">{current.title}</span>
+    <header className="h-16 px-3 sm:px-6 bg-bg-primary/90 backdrop-blur-md border-b border-border-subtle flex items-center justify-between sticky top-0 z-20">
+      {/* Left: Mobile Menu Trigger + Breadcrumb Trail */}
+      <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+        <button
+          type="button"
+          onClick={onToggleMobileMenu}
+          aria-label="Open navigation menu"
+          className="lg:hidden p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-elevated border border-border-subtle/50 transition-colors flex-shrink-0"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+
+        {/* Mobile Logo Brand Icon */}
+        <div className="lg:hidden flex items-center gap-1.5 flex-shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-accent-cyan/15 border border-accent-cyan/40 flex items-center justify-center text-accent-cyan">
+            <ShieldCheck className="w-4 h-4" />
+          </div>
+        </div>
+
+        {/* Breadcrumb Trail */}
+        <div className="flex items-center gap-1.5 sm:gap-2 text-xs min-w-0 truncate">
+          <span className="hidden sm:inline text-text-muted font-medium">HashForge</span>
+          <ChevronRight className="hidden sm:inline w-3.5 h-3.5 text-text-muted flex-shrink-0" />
+          <span className="hidden md:inline text-text-secondary font-medium">{current.category}</span>
+          <ChevronRight className="hidden md:inline w-3.5 h-3.5 text-text-muted flex-shrink-0" />
+          <span className="text-text-primary font-semibold truncate max-w-[150px] sm:max-w-none">
+            {current.title}
+          </span>
+        </div>
       </div>
 
       {/* Right Action Icons */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         {/* Backend Status */}
         <div
-          title={backendOnline ? 'Backend service online at 127.0.0.1:8000' : 'Backend service offline or unreachable'}
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-bg-card border border-border-subtle text-xs"
+          title={backendOnline ? 'Backend service online at /api/health' : 'Backend service offline or unreachable'}
+          className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-full bg-bg-card border border-border-subtle text-xs"
         >
           {backendOnline ? (
             <>
-              <span className="w-2 h-2 rounded-full bg-accent-emerald animate-pulse" />
-              <span className="text-text-secondary text-[11px] font-mono-code">Core API Ready</span>
+              <span className="w-2 h-2 rounded-full bg-accent-emerald animate-pulse flex-shrink-0" />
+              <span className="hidden sm:inline text-text-secondary text-[11px] font-mono-code">Core API Ready</span>
+              <span className="sm:hidden text-accent-emerald text-[10px] font-mono-code">Ready</span>
             </>
           ) : backendOnline === false ? (
             <>
-              <span className="w-2 h-2 rounded-full bg-accent-rose" />
-              <span className="text-accent-rose text-[11px] font-mono-code">API Offline</span>
+              <span className="w-2 h-2 rounded-full bg-accent-rose flex-shrink-0" />
+              <span className="hidden sm:inline text-accent-rose text-[11px] font-mono-code">API Offline</span>
+              <span className="sm:hidden text-accent-rose text-[10px] font-mono-code">Offline</span>
             </>
           ) : (
             <>
-              <span className="w-2 h-2 rounded-full bg-accent-amber animate-pulse" />
-              <span className="text-text-muted text-[11px] font-mono-code">Connecting...</span>
+              <span className="w-2 h-2 rounded-full bg-accent-amber animate-pulse flex-shrink-0" />
+              <span className="hidden sm:inline text-text-muted text-[11px] font-mono-code">Connecting...</span>
+              <span className="sm:hidden text-text-muted text-[10px] font-mono-code">...</span>
             </>
           )}
         </div>
@@ -97,19 +121,19 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
         <button
           type="button"
           onClick={onOpenDocs}
-          className="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-elevated border border-transparent hover:border-border-subtle transition-colors"
-          title="Open Documentation & Learning Center"
-          aria-label="Documentation"
+          className="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-elevated border border-transparent hover:border-border-subtle transition-colors min-h-[38px] min-w-[38px] flex items-center justify-center"
+          title="Open documentation"
+          aria-label="Open documentation"
         >
           <BookOpen className="w-4 h-4" />
         </button>
 
-        {/* Theme Toggle */}
+        {/* Dark / Light Theme Toggle */}
         <button
           type="button"
           onClick={onToggleTheme}
-          className="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-elevated border border-transparent hover:border-border-subtle transition-colors"
-          title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Theme`}
+          className="p-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-bg-elevated border border-transparent hover:border-border-subtle transition-colors min-h-[38px] min-w-[38px] flex items-center justify-center"
+          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           aria-label="Toggle theme"
         >
           <SunMoon className="w-4 h-4" />
@@ -118,4 +142,3 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
     </header>
   );
 };
-

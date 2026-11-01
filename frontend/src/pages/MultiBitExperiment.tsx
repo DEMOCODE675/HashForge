@@ -118,15 +118,15 @@ export const MultiBitExperiment: React.FC = () => {
 
         {/* Mode Selector */}
         <div className="pt-4 border-t border-border-subtle/50 space-y-4">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
             <label className="text-xs font-semibold text-text-secondary uppercase tracking-wider">
               2. Selection Mode:
             </label>
-            <div className="inline-flex rounded-lg border border-border-subtle p-0.5 bg-bg-elevated text-xs">
+            <div className="inline-flex rounded-lg border border-border-subtle p-0.5 bg-bg-elevated text-xs w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => setMode('random')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-medium transition-colors ${
+                className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-2 rounded-md font-medium transition-colors min-h-[36px] ${
                   mode === 'random' ? 'bg-bg-card text-accent-cyan font-bold' : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
@@ -136,7 +136,7 @@ export const MultiBitExperiment: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setMode('manual')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md font-medium transition-colors ${
+                className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-2 rounded-md font-medium transition-colors min-h-[36px] ${
                   mode === 'manual' ? 'bg-bg-card text-accent-cyan font-bold' : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
@@ -193,9 +193,9 @@ export const MultiBitExperiment: React.FC = () => {
           )}
         </div>
 
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
           {data && (
-            <div className="text-xs text-text-muted font-mono-code">
+            <div className="text-xs text-text-muted font-mono-code break-all">
               Flipped Indices: <strong className="text-accent-amber">{JSON.stringify(data.flipped_bit_indices)}</strong>
             </div>
           )}
@@ -203,7 +203,7 @@ export const MultiBitExperiment: React.FC = () => {
             type="button"
             onClick={runExperiment}
             disabled={loading}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-accent-cyan hover:bg-accent-cyan/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all shadow-cyan-glow"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-accent-cyan hover:bg-accent-cyan/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all shadow-cyan-glow min-h-[44px]"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span>{loading ? 'Evaluating...' : 'Run Multi-Bit Perturbation'}</span>

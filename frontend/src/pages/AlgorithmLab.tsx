@@ -67,7 +67,7 @@ export const AlgorithmLab: React.FC = () => {
           />
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-border-subtle/50">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-t border-border-subtle/50">
           <div className="flex items-center gap-3">
             <label className="text-xs text-text-secondary">Benchmark Iterations:</label>
             <select
@@ -86,7 +86,7 @@ export const AlgorithmLab: React.FC = () => {
             type="button"
             onClick={() => runComparison(inputText, iterations)}
             disabled={loading}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-accent-emerald hover:bg-accent-emerald/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-accent-emerald hover:bg-accent-emerald/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all min-h-[44px]"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span>{loading ? 'Benchmarking...' : 'Execute Comparison & Benchmark'}</span>
@@ -158,23 +158,23 @@ export const AlgorithmLab: React.FC = () => {
             </div>
 
             <div className="space-y-2 text-xs text-text-secondary leading-relaxed">
-              <div className="flex justify-between py-1 border-b border-border-subtle/50">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-border-subtle/50 gap-0.5 sm:gap-2">
                 <span>Standard Specification:</span>
                 <strong className="text-text-primary">FIPS PUB 180-4 (NIST 2002)</strong>
               </div>
-              <div className="flex justify-between py-1 border-b border-border-subtle/50">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-border-subtle/50 gap-0.5 sm:gap-2">
                 <span>Internal Construction:</span>
                 <strong className="text-text-primary">Merkle-Damgård Iterative Compression</strong>
               </div>
-              <div className="flex justify-between py-1 border-b border-border-subtle/50">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-border-subtle/50 gap-0.5 sm:gap-2">
                 <span>Block Processing Size:</span>
                 <strong className="text-text-primary">512 Bits (64 Bytes)</strong>
               </div>
-              <div className="flex justify-between py-1 border-b border-border-subtle/50">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-border-subtle/50 gap-0.5 sm:gap-2">
                 <span>Word Size & State:</span>
                 <strong className="text-text-primary">32-Bit Words (8 Variables: A–H)</strong>
               </div>
-              <div className="flex justify-between py-1">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 gap-0.5 sm:gap-2">
                 <span>Rounds per Block:</span>
                 <strong className="text-text-primary">64 Compression Rounds</strong>
               </div>
@@ -197,23 +197,23 @@ export const AlgorithmLab: React.FC = () => {
             </div>
 
             <div className="space-y-2 text-xs text-text-secondary leading-relaxed">
-              <div className="flex justify-between py-1 border-b border-border-subtle/50">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-border-subtle/50 gap-0.5 sm:gap-2">
                 <span>Standard Specification:</span>
                 <strong className="text-text-primary">FIPS PUB 202 (NIST 2015)</strong>
               </div>
-              <div className="flex justify-between py-1 border-b border-border-subtle/50">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-border-subtle/50 gap-0.5 sm:gap-2">
                 <span>Internal Construction:</span>
                 <strong className="text-text-primary">Keccak Permutation-Based Sponge</strong>
               </div>
-              <div className="flex justify-between py-1 border-b border-border-subtle/50">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-border-subtle/50 gap-0.5 sm:gap-2">
                 <span>Rate / Capacity:</span>
                 <strong className="text-text-primary">r = 1088 Bits / c = 512 Bits</strong>
               </div>
-              <div className="flex justify-between py-1 border-b border-border-subtle/50">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 border-b border-border-subtle/50 gap-0.5 sm:gap-2">
                 <span>Internal State:</span>
                 <strong className="text-text-primary">1600 Bits (5x5 Matrix of 64-bit Lanes)</strong>
               </div>
-              <div className="flex justify-between py-1">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-1.5 gap-0.5 sm:gap-2">
                 <span>Rounds per Block:</span>
                 <strong className="text-text-primary">24 Keccak-f[1600] Rounds</strong>
               </div>

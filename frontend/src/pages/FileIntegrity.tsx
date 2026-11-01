@@ -97,14 +97,14 @@ export const FileIntegrity: React.FC = () => {
       </div>
 
       {/* Mode Selector Tabs */}
-      <div className="flex items-center gap-2 border-b border-border-subtle pb-2">
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 border-b border-border-subtle pb-2">
         <button
           type="button"
           onClick={() => {
             setMode('single');
             setError(null);
           }}
-          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+          className={`flex-1 sm:flex-none justify-center px-4 py-2.5 rounded-lg text-xs font-semibold transition-all min-h-[40px] text-center ${
             mode === 'single'
               ? 'bg-accent-cyan/15 text-accent-cyan border border-accent-cyan/40 shadow-cyan-glow'
               : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
@@ -119,7 +119,7 @@ export const FileIntegrity: React.FC = () => {
             setMode('two-file');
             setError(null);
           }}
-          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+          className={`flex-1 sm:flex-none justify-center px-4 py-2.5 rounded-lg text-xs font-semibold transition-all min-h-[40px] text-center ${
             mode === 'two-file'
               ? 'bg-accent-emerald/15 text-accent-emerald border border-accent-emerald/40'
               : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
@@ -134,13 +134,13 @@ export const FileIntegrity: React.FC = () => {
             setMode('reference');
             setError(null);
           }}
-          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+          className={`flex-1 sm:flex-none justify-center px-4 py-2.5 rounded-lg text-xs font-semibold transition-all min-h-[40px] text-center ${
             mode === 'reference'
               ? 'bg-accent-amber/15 text-accent-amber border border-accent-amber/40'
               : 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
           }`}
         >
-          Vendor Reference Hash Validation
+          Vendor Reference Hash
         </button>
       </div>
 
@@ -261,7 +261,7 @@ export const FileIntegrity: React.FC = () => {
               type="button"
               onClick={handleCompare}
               disabled={loading || !fileA || !fileB}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-accent-emerald hover:bg-accent-emerald/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all shadow-cyan-glow disabled:opacity-50"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-accent-emerald hover:bg-accent-emerald/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all shadow-cyan-glow disabled:opacity-50 min-h-[44px]"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               <span>{loading ? 'Comparing...' : 'Compare File Fingerprints'}</span>
@@ -346,7 +346,7 @@ export const FileIntegrity: React.FC = () => {
               type="button"
               onClick={handleCompare}
               disabled={loading || !fileA || !referenceHash.trim()}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-accent-amber hover:bg-accent-amber/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all shadow-amber-glow disabled:opacity-50"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg bg-accent-amber hover:bg-accent-amber/90 text-bg-primary font-semibold text-xs tracking-wider uppercase transition-all shadow-amber-glow disabled:opacity-50 min-h-[44px]"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               <span>{loading ? 'Verifying...' : 'Validate Against Checksum'}</span>
