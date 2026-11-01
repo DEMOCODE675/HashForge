@@ -11,7 +11,12 @@ import {
   QuizQuestion,
 } from '../types';
 
-const API_BASE = '/api';
+const rawBase = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = rawBase
+  ? rawBase.replace(/\/$/, '').endsWith('/api')
+    ? rawBase.replace(/\/$/, '')
+    : `${rawBase.replace(/\/$/, '')}/api`
+  : '/api';
 
 class ApiError extends Error {
   status: number;

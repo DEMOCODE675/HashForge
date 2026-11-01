@@ -3,11 +3,12 @@
 Exposes the cryptographic engine and experiment runners to modern web frontends.
 """
 
+import os
 import sys
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 
 # Ensure root directory is on Python path so core.* can be imported cleanly
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,21 +28,34 @@ app = FastAPI(
     title="HashForge Cryptographic API",
     description="FIPS 180-4 (SHA-256) and FIPS 202 (SHA3-256) Avalanche Laboratory API",
     version="2.0.0",
-    docs_url="/docs",
-    redoc_url="/redoc",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json",
 )
 
-# CORS Configuration for local frontend development
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+@app.get("/docs", include_in_schema=False)
+def docs_redirect():
+    """Redirect /docs to /api/docs for compatibility."""
+    return RedirectResponse(url="/api/docs")
+
+# CORS Configuration for local development and cloud deployments (e.g. Vercel)
+raw_origins = os.getenv("ALLOWED_ORIGINS", "")
+if raw_origins:
+    origins = [orig.strip() for orig in raw_origins.split(",") if orig.strip()]
+    allow_all = "*" in origins
+else:
+    origins = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "*",  # Local development wildcard
-    ],
-    allow_credentials=True,
+    ]
+    allow_all = True
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"] if allow_all else origins,
+    allow_credentials=False if allow_all else True,
     allow_methods=["*"],
     allow_headers=["*"],
 )

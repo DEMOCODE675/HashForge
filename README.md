@@ -108,7 +108,8 @@ HashForge/
 │   ├── PROJECT_REPORT.md       # 13-section academic project report
 │   ├── ARCHITECTURE.md         # Full-stack architectural specification
 │   ├── USER_GUIDE.md           # Step-by-step user manual
-│   └── TESTING.md              # Quality assurance & test matrix
+│   ├── TESTING.md              # Quality assurance & test matrix
+│   └── DEPLOYMENT.md           # Render & Vercel deployment guide
 └── DEVELOPMENT_PROGRESS.md     # Milestone tracking log
 ```
 
