@@ -10,19 +10,31 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, RedirectResponse
 
-# Ensure root directory is on Python path so core.* can be imported cleanly
-BASE_DIR = Path(__file__).resolve().parent.parent
-if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
+# Ensure both backend directory and root directory are on Python path
+CURRENT_DIR = Path(__file__).resolve().parent
+PARENT_DIR = CURRENT_DIR.parent
+for p in (str(PARENT_DIR), str(CURRENT_DIR)):
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+try:
+    from backend.api.routes import (
+        hash_router,
+        experiment_router,
+        avalanche_router,
+        file_router,
+        health_router,
+    )
+except ImportError:
+    from api.routes import (
+        hash_router,
+        experiment_router,
+        avalanche_router,
+        file_router,
+        health_router,
+    )
 
 from core.validators import ValidationError
-from backend.api.routes import (
-    hash_router,
-    experiment_router,
-    avalanche_router,
-    file_router,
-    health_router,
-)
 
 app = FastAPI(
     title="HashForge Cryptographic API",

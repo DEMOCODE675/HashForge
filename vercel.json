@@ -1,18 +1,14 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "services": {
-    "hashforge-api": {
-      "root": ".",
-      "framework": "fastapi",
-      "buildCommand": "pip install -r requirements.txt"
-    },
-    "backend": {
-      "root": "backend",
-      "framework": "fastapi"
-    },
     "frontend": {
       "root": "frontend",
       "framework": "vite"
+    },
+    "backend": {
+      "root": "backend",
+      "framework": "fastapi",
+      "entrypoint": "main:app"
     }
   },
   "rewrites": [
@@ -25,7 +21,7 @@
     {
       "source": "/(.*)",
       "destination": {
-        "service": "hashforge-api"
+        "service": "frontend"
       }
     }
   ]

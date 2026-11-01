@@ -1,42 +1,42 @@
 # HashForge: Production Deployment Guide
 
 HashForge supports two deployment models:
-1. **All-in-One Vercel Deployment (Recommended):** Both React frontend and FastAPI backend deployed together on **Vercel** under a single domain.
+1. **All-in-One Vercel Deployment (Vercel Services - Recommended):** Frontend in `frontend/` and FastAPI backend in `backend/` deployed together on **Vercel** under a single domain.
 2. **Split Deployment (Alternative):** FastAPI backend on **Render** (persistent container) + React frontend on **Vercel** (static edge).
 
 ---
 
-## METHOD 1: All-in-One Vercel Deployment (Recommended)
+## METHOD 1: All-in-One Vercel Deployment (Vercel Services)
 
-Vercel natively supports **Python Serverless Functions** alongside **Vite Static Builds**. The repository has been pre-configured with:
-- [`api/index.py`](../api/index.py): Vercel Python serverless function entrypoint for FastAPI.
-- [`vercel.json`](../vercel.json): Unified build command and rewrites routing `/api/*` to FastAPI and all other routes to React.
-- [`requirements.txt`](../requirements.txt): Python dependencies for serverless execution.
+Vercel natively supports multi-service deployments via [`vercel.json`](../vercel.json):
+- **Frontend Service:** Located in [`frontend/`](../frontend/) with framework `vite`.
+- **Backend Service:** Located in [`backend/`](../backend/) with framework `fastapi` and entrypoint `main:app`.
+- **Rewrites:** Routes `/api/(.*)` directly to `backend` and `/(.*)` to `frontend`.
 
 ```mermaid
 graph LR
     User["User Browser"]
-    Vercel["Vercel Single Project (https://your-hashforge.vercel.app)"]
-    Frontend["Vite React SPA<br/>(frontend/dist)"]
-    Backend["Python FastAPI Serverless<br/>(api/index.py)"]
+    Vercel["Vercel Project (https://your-hashforge.vercel.app)"]
+    Frontend["Frontend Service (frontend/)<br/>Framework: Vite"]
+    Backend["Backend Service (backend/)<br/>Framework: FastAPI (main:app)"]
 
-    User -- "1. Requests App" --> Vercel
+    User -- "Requests App" --> Vercel
     Vercel -- "/(.*)" --> Frontend
     Vercel -- "/api/*" --> Backend
 ```
 
-### Advantages of All-in-One Vercel Deployment
+### Advantages of Vercel Multi-Service
+- **Clear Folder Boundaries:** Backend is 100% inside `backend/`, and frontend is 100% inside `frontend/`.
 - **Zero CORS Issues:** Frontend and API share the exact same domain.
-- **Zero Environment Variables Required:** Frontend defaults to relative `/api` paths.
-- **Single Git Push:** Pushing to GitHub triggers automatic preview and production deployments for both tiers.
-- **Cost:** 100% free on Vercel's Hobby tier.
+- **Zero Environment Variables Required:** Frontend communicates over relative `/api` paths.
+- **Single Git Push:** Pushing to GitHub deploys both tiers atomically.
 
 ### Step-by-Step Deployment Instructions
 
 1. **Push your repository to GitHub:**
    ```powershell
    git add .
-   git commit -m "Configure full-stack Vercel deployment"
+   git commit -m "Configure Vercel multi-service for frontend and backend"
    git push origin main
    ```
 
@@ -46,25 +46,25 @@ graph LR
    - Select your **HashForge** GitHub repository.
 
 3. **Configure Project Settings:**
-   - **Project Name:** `hashforge` (or your preferred name)
-   - **Framework Preset:** Leave as **Other** (or Vite). The root [`vercel.json`](../vercel.json) overrides this automatically.
-   - **Root Directory:** Leave as `./` (repository root). Do **not** select `frontend/` because Vercel needs access to both `api/index.py` and `frontend/`.
-   - **Build and Output Settings:** Leave defaults (the root `vercel.json` defines the build command `cd frontend && npm install && npm run build` and output directory `frontend/dist`).
-   - **Environment Variables:** None needed!
+   - **Project Name:** `hashforge` (or your chosen name)
+   - **Framework Preset:** Leave as **Other** (the root `vercel.json` defines the `frontend` and `backend` services).
+   - **Root Directory:** `./` (repository root).
+   - **Environment Variables:** None required!
 
 4. **Click Deploy:**
-   - Vercel installs Python dependencies, builds the Vite React production bundle, and deploys both under your URL (e.g., `https://hashforge.vercel.app`).
+   - Vercel automatically builds both the `frontend` (Vite) and `backend` (FastAPI) services.
+   - You will receive a single unified URL: `https://<your-project-name>.vercel.app`.
 
 5. **Verify the Deployment:**
-   - Visit `https://your-project.vercel.app`.
+   - Visit `https://<your-project-name>.vercel.app`.
    - The top header will show `Backend: Operational` (with green status).
-   - Check interactive Swagger documentation at `https://your-project.vercel.app/api/docs`.
+   - Check interactive Swagger documentation at `https://<your-project-name>.vercel.app/api/docs`.
 
 ---
 
 ## METHOD 2: Split Cloud Deployment (Render Backend + Vercel Frontend)
 
-Use this method if you prefer a persistent, long-running Docker or Linux container for Python instead of serverless functions.
+Use this method if you prefer a persistent, long-running Docker or Linux container on Render instead of serverless functions.
 
 ### Step 1: Deploy Backend to Render
 
@@ -94,11 +94,11 @@ Use this method if you prefer a persistent, long-running Docker or Linux contain
 - The 256-bit matrix calculations and 100-trial Monte Carlo simulations execute in pure Python in ~15 milliseconds.
 
 ### Client-Side Routing
-The root [`vercel.json`](../vercel.json) rewrites all non-API paths to `/index.html`:
+The root [`vercel.json`](../vercel.json) rewrites all non-API paths to `frontend`:
 ```json
 {
   "source": "/(.*)",
-  "destination": "/index.html"
+  "destination": { "service": "frontend" }
 }
 ```
 This ensures refreshing pages like `/single-bit-experiment` or `/algorithm-lab` will never return 404 errors.
